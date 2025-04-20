@@ -9,7 +9,7 @@ import { Send } from "lucide-react";
 import { z } from "zod";
 
 const genderValues = ["male", "female"] as const;
-type Gender = (typeof genderValues)[number];
+// type Gender = (typeof genderValues)[number];
 
 const schema = z.object({
 	conversationFile: z.instanceof(File),
