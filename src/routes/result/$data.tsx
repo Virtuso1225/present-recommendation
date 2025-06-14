@@ -9,8 +9,6 @@ import {
 	Copy,
 	ExternalLink,
 	Gift,
-	Heart,
-	Info,
 	Lightbulb,
 	Mail,
 	Share2,
