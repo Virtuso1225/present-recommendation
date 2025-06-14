@@ -1,7 +1,7 @@
+import type { PresentRecommendationResponse } from "@/features/GiftForm/utils/type";
 import { createFileRoute } from "@tanstack/react-router";
 import useEmblaCarousel from "embla-carousel-react";
 import {
-	ArrowLeft,
 	ChevronLeft,
 	ChevronRight,
 	ExternalLink,
@@ -31,12 +31,15 @@ interface Recommendation {
 function RouteComponent() {
 	const { data } = Route.useParams();
 
+	const results = JSON.parse(data) as PresentRecommendationResponse;
+	console.log(results);
+
 	const [emblaRef, emblaApi] = useEmblaCarousel({
 		align: "start",
 		containScroll: "trimSnaps",
 	});
 
-	const [recommendation, setRecommendation] = useState<Recommendation>({
+	const [recommendation, _] = useState<Recommendation>({
 		gifts: [
 			{
 				name: "애플워치 SE",
@@ -88,6 +91,7 @@ function RouteComponent() {
 			"장기적으로 사용할 수 있는 내구성 있는 제품입니다.",
 		],
 	});
+
 	const scrollPrev = () => emblaApi?.scrollPrev();
 	const scrollNext = () => emblaApi?.scrollNext();
 
