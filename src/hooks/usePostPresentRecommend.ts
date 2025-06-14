@@ -27,9 +27,47 @@ const postPresentRecommend = async (data: FormValues) => {
 
 type Props = MutationOptions<PresentRecommendationResponse, Error, FormValues>;
 
+const dummyFn = async (
+	data: FormValues,
+): Promise<PresentRecommendationResponse> => {
+	return new Promise((resolve) => {
+		setTimeout(() => {
+			resolve({
+				present: [
+					{
+						id: 1,
+						name: "test",
+						price: "10000",
+						description: "test",
+						image_url: "https://via.placeholder.com/150",
+						reason: "test",
+						shopping_link: "https://www.google.com",
+						mall_name: "test",
+						search_query: "test",
+						product_info: {
+							additionalProp1: {},
+							additionalProp2: {},
+							additionalProp3: {},
+						},
+						alternative_products: [
+							{
+								additionalProp1: {},
+								additionalProp2: {},
+								additionalProp3: {},
+							},
+						],
+						search_error: "test",
+					},
+				],
+				letter:
+					"항상 저를 위해 따뜻한 마음을 보여주셔서 감사합니다. 이 작은 선물이 제 마음을 전하는 데 도움이 되길 바랍니다.",
+			});
+		}, 2000);
+	});
+};
 export const usePostPresentRecommend = (props: Props) => {
 	return useMutation({
 		...props,
-		mutationFn: postPresentRecommend,
+		mutationFn: dummyFn,
 	});
 };

@@ -47,7 +47,6 @@ const GiftForm = () => {
 		},
 		onSubmit: ({ value }) => {
 			console.log(value);
-			alert("Form submitted successfully!");
 			postPresentRecommend(value as FormValues);
 		},
 	});
@@ -79,7 +78,7 @@ const GiftForm = () => {
 
 	return (
 		<div className="max-w-3xl mx-auto">
-			{!isPending ? (
+			{isPending ? (
 				renderLoadingState()
 			) : (
 				<Card className="space-y-8 p-8">
