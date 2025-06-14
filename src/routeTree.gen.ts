@@ -11,10 +11,17 @@
 // Import Routes
 
 import { Route as rootRoute } from './routes/__root'
+import { Route as ErrorImport } from './routes/error'
 import { Route as IndexImport } from './routes/index'
 import { Route as ResultDataImport } from './routes/result/$data'
 
 // Create/Update Routes
+
+const ErrorRoute = ErrorImport.update({
+  id: '/error',
+  path: '/error',
+  getParentRoute: () => rootRoute,
+} as any)
 
 const IndexRoute = IndexImport.update({
   id: '/',
@@ -39,6 +46,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexImport
       parentRoute: typeof rootRoute
     }
+    '/error': {
+      id: '/error'
+      path: '/error'
+      fullPath: '/error'
+      preLoaderRoute: typeof ErrorImport
+      parentRoute: typeof rootRoute
+    }
     '/result/$data': {
       id: '/result/$data'
       path: '/result/$data'
@@ -53,36 +67,41 @@ declare module '@tanstack/react-router' {
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/error': typeof ErrorRoute
   '/result/$data': typeof ResultDataRoute
 }
 
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/error': typeof ErrorRoute
   '/result/$data': typeof ResultDataRoute
 }
 
 export interface FileRoutesById {
   __root__: typeof rootRoute
   '/': typeof IndexRoute
+  '/error': typeof ErrorRoute
   '/result/$data': typeof ResultDataRoute
 }
 
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/result/$data'
+  fullPaths: '/' | '/error' | '/result/$data'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/result/$data'
-  id: '__root__' | '/' | '/result/$data'
+  to: '/' | '/error' | '/result/$data'
+  id: '__root__' | '/' | '/error' | '/result/$data'
   fileRoutesById: FileRoutesById
 }
 
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  ErrorRoute: typeof ErrorRoute
   ResultDataRoute: typeof ResultDataRoute
 }
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  ErrorRoute: ErrorRoute,
   ResultDataRoute: ResultDataRoute,
 }
 
@@ -97,11 +116,15 @@ export const routeTree = rootRoute
       "filePath": "__root.tsx",
       "children": [
         "/",
+        "/error",
         "/result/$data"
       ]
     },
     "/": {
       "filePath": "index.tsx"
+    },
+    "/error": {
+      "filePath": "error.tsx"
     },
     "/result/$data": {
       "filePath": "result/$data.tsx"
