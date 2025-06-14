@@ -12,12 +12,19 @@
 
 import { Route as rootRoute } from './routes/__root'
 import { Route as IndexImport } from './routes/index'
+import { Route as ResultDataImport } from './routes/result/$data'
 
 // Create/Update Routes
 
 const IndexRoute = IndexImport.update({
   id: '/',
   path: '/',
+  getParentRoute: () => rootRoute,
+} as any)
+
+const ResultDataRoute = ResultDataImport.update({
+  id: '/result/$data',
+  path: '/result/$data',
   getParentRoute: () => rootRoute,
 } as any)
 
@@ -32,6 +39,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexImport
       parentRoute: typeof rootRoute
     }
+    '/result/$data': {
+      id: '/result/$data'
+      path: '/result/$data'
+      fullPath: '/result/$data'
+      preLoaderRoute: typeof ResultDataImport
+      parentRoute: typeof rootRoute
+    }
   }
 }
 
@@ -39,32 +53,37 @@ declare module '@tanstack/react-router' {
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/result/$data': typeof ResultDataRoute
 }
 
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/result/$data': typeof ResultDataRoute
 }
 
 export interface FileRoutesById {
   __root__: typeof rootRoute
   '/': typeof IndexRoute
+  '/result/$data': typeof ResultDataRoute
 }
 
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/'
+  fullPaths: '/' | '/result/$data'
   fileRoutesByTo: FileRoutesByTo
-  to: '/'
-  id: '__root__' | '/'
+  to: '/' | '/result/$data'
+  id: '__root__' | '/' | '/result/$data'
   fileRoutesById: FileRoutesById
 }
 
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  ResultDataRoute: typeof ResultDataRoute
 }
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  ResultDataRoute: ResultDataRoute,
 }
 
 export const routeTree = rootRoute
@@ -77,11 +96,15 @@ export const routeTree = rootRoute
     "__root__": {
       "filePath": "__root.tsx",
       "children": [
-        "/"
+        "/",
+        "/result/$data"
       ]
     },
     "/": {
       "filePath": "index.tsx"
+    },
+    "/result/$data": {
+      "filePath": "result/$data.tsx"
     }
   }
 }

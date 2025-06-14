@@ -8,6 +8,7 @@ import { Label } from "@/components/ui/label";
 import * as ShadcnSelect from "@/components/ui/select";
 import { Slider as ShadcnSlider } from "@/components/ui/slider";
 import { Textarea as ShadcnTextarea } from "@/components/ui/textarea";
+import { Loader2 } from "lucide-react";
 import type { ReactNode } from "react";
 
 export function SubmitButton({
@@ -28,9 +29,15 @@ export function SubmitButton({
 					disabled={isSubmitting}
 					className="w-full cursor-pointer"
 				>
-					{prefix}
-					{label}
-					{suffix}
+					{isSubmitting ? (
+						<Loader2 className="w-4 h-4 animate-spin" />
+					) : (
+						<>
+							{prefix}
+							{label}
+							{suffix}
+						</>
+					)}
 				</Button>
 			)}
 		</form.Subscribe>
@@ -177,7 +184,7 @@ export function Slider({
 				{label}:
 				<span className="text-sm">
 					{unit}
-					{field.state.value.toLocaleString()}
+					{field.state.value ? field.state.value.toLocaleString() : 0}
 				</span>
 			</Label>
 			<ShadcnSlider
