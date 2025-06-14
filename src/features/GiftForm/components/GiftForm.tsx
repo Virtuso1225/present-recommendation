@@ -7,7 +7,7 @@ import {
 import { useAppForm } from "@/hooks/form";
 import { usePostPresentRecommend } from "@/hooks/usePostPresentRecommend";
 import { useRouter } from "@tanstack/react-router";
-import { AlertCircle, RefreshCw, Send, Sparkles } from "lucide-react";
+import { Send, Sparkles } from "lucide-react";
 import { z } from "zod";
 
 const genderValues = ["male", "female"] as const;
@@ -75,58 +75,6 @@ const GiftForm = () => {
 				<p>대화 내용을 분석하고</p>
 				<p>취향과 상황에 맞는 선물을 찾고</p>
 				<p>마음을 담은 편지도 작성하고 있어요</p>
-			</div>
-		</div>
-	);
-
-	const renderErrorState = () => (
-		<div className="min-h-[80vh] flex flex-col items-center justify-center">
-			<div className="relative w-24 h-24 mb-8">
-				<div className="absolute inset-0 rounded-full bg-red-50" />
-				<div className="absolute inset-0 flex items-center justify-center text-red-500">
-					<AlertCircle className="w-12 h-12" strokeWidth={1.5} />
-				</div>
-			</div>
-
-			<div className="text-center max-w-md mx-auto space-y-4">
-				<h2 className="text-2xl font-semibold text-gray-900">
-					선물 추천에 실패했어요
-				</h2>
-				<p className="text-gray-500 leading-relaxed">
-					일시적인 오류가 발생했습니다.
-					<br />
-					잠시 후 다시 시도해주세요.
-				</p>
-
-				<div className="pt-6 space-y-3">
-					<button
-						type="button"
-						// onClick={handleRetry}
-						className="button-primary w-full max-w-xs mx-auto"
-					>
-						<RefreshCw className="w-5 h-5" />
-						<span>다시 시도하기</span>
-					</button>
-
-					<button
-						type="button"
-						onClick={() => router.navigate({ to: "/" })}
-						className="block w-full max-w-xs mx-auto px-6 py-3 text-gray-600 hover:text-gray-900 transition-colors font-medium"
-					>
-						처음으로 돌아가기
-					</button>
-				</div>
-			</div>
-
-			<div className="mt-12 p-6 bg-gray-50 rounded-xl border border-gray-100 max-w-md mx-auto">
-				<h3 className="font-medium text-gray-900 mb-3">
-					문제가 계속 발생한다면
-				</h3>
-				<ul className="text-sm text-gray-600 space-y-2">
-					<li>• 업로드한 파일이 올바른 형식인지 확인해주세요</li>
-					<li>• 인터넷 연결 상태를 확인해주세요</li>
-					<li>• 잠시 후 다시 시도해주세요</li>
-				</ul>
 			</div>
 		</div>
 	);
