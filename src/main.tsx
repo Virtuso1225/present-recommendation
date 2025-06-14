@@ -10,6 +10,7 @@ import { routeTree } from "./routeTree.gen.ts";
 
 import "./styles.css";
 import ErrorFallback from "@/features/GiftForm/components/Error.tsx";
+import NotFound from "@/features/GiftForm/components/NotFound.tsx";
 import reportWebVitals from "./reportWebVitals.ts";
 
 // Create a new router instance
@@ -22,6 +23,7 @@ const router = createRouter({
 	scrollRestoration: true,
 	defaultStructuralSharing: true,
 	defaultPreloadStaleTime: 0,
+	defaultNotFoundComponent: NotFound,
 });
 
 // Register the router instance for type safety
@@ -42,6 +44,7 @@ if (rootElement && !rootElement.innerHTML) {
 					<RouterProvider
 						router={router}
 						defaultErrorComponent={ErrorFallback}
+						notFoundMode="root"
 					/>
 				</ErrorBoundary>
 			</TanstackQuery.Provider>

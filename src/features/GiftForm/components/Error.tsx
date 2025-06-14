@@ -36,6 +36,7 @@ const ErrorFallback = ({
 								errorHandler ? errorHandler() : router.navigate({ to: "/" })
 							}
 							className="cursor-pointer"
+							size="lg"
 						>
 							{errorHandlerText}
 						</Button>
