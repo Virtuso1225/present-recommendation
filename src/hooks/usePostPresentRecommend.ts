@@ -3,7 +3,7 @@ import type { PresentRecommendationResponse } from "@/features/GiftForm/utils/ty
 import { type MutationOptions, useMutation } from "@tanstack/react-query";
 import ky from "ky";
 
-const postPresentRecommend = async (data: FormValues) => {
+export const postPresentRecommend = async (data: FormValues) => {
 	const formData = new FormData();
 	formData.append("file", data.conversationFile);
 	formData.append("age", data.age.toString());
@@ -30,6 +30,7 @@ type Props = MutationOptions<PresentRecommendationResponse, Error, FormValues>;
 const dummyFn = async (
 	data: FormValues,
 ): Promise<PresentRecommendationResponse> => {
+	console.log(data);
 	return new Promise((resolve) => {
 		setTimeout(() => {
 			resolve({
