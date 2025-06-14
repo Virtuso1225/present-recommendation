@@ -1,12 +1,17 @@
+import { Card } from "@/components/ui/card";
 import type { PresentRecommendationResponse } from "@/features/GiftForm/utils/type";
 import { createFileRoute } from "@tanstack/react-router";
 import useEmblaCarousel from "embla-carousel-react";
 import {
+	BadgeInfo,
 	ChevronLeft,
 	ChevronRight,
+	Copy,
 	ExternalLink,
 	Gift,
 	Heart,
+	Info,
+	Lightbulb,
 	Mail,
 	Share2,
 } from "lucide-react";
@@ -23,9 +28,9 @@ interface Recommendation {
 		description: string;
 		imageUrl: string;
 		link?: string;
+		reason: string;
 	}>;
 	letter: string;
-	reasons: string[];
 }
 
 function RouteComponent() {
@@ -48,6 +53,7 @@ function RouteComponent() {
 				imageUrl:
 					"https://images.unsplash.com/photo-1434494878577-86c23bcb06b9?auto=format&fit=crop&q=80&w=600",
 				link: "https://www.apple.com/kr/apple-watch-se/",
+				reason: "일상 생활에서 실용적으로 사용할 수 있는 선물입니다.",
 			},
 			{
 				name: "조 말론 향수",
@@ -56,6 +62,7 @@ function RouteComponent() {
 				imageUrl:
 					"https://images.unsplash.com/photo-1523293182086-7651a899d37f?auto=format&fit=crop&q=80&w=600",
 				link: "https://www.jomalone.co.kr/",
+				reason: "우아하고 세련된 향기로 특별한 순간을 만들어주는 선물",
 			},
 			{
 				name: "소니 WH-1000XM5 헤드폰",
@@ -65,6 +72,7 @@ function RouteComponent() {
 				imageUrl:
 					"https://images.unsplash.com/photo-1505740420928-5e560c06d30e?auto=format&fit=crop&q=80&w=600",
 				link: "https://www.sony.co.kr/electronics/headphones/wh-1000xm5",
+				reason: "최고급 노이즈 캔슬링과 뛰어난 음질을 제공하는 프리미엄 헤드폰",
 			},
 			{
 				name: "몽블랑 사피아노 반지갑",
@@ -73,6 +81,7 @@ function RouteComponent() {
 				imageUrl:
 					"https://images.unsplash.com/photo-1627123424574-724758594e93?auto=format&fit=crop&q=80&w=600",
 				link: "https://www.montblanc.com/",
+				reason: "클래식한 디자인과 최고급 가죽으로 제작된 명품 지갑",
 			},
 			{
 				name: "다이슨 에어랩",
@@ -81,20 +90,19 @@ function RouteComponent() {
 				imageUrl:
 					"https://images.unsplash.com/photo-1522338242992-e1a54906a8da?auto=format&fit=crop&q=80&w=600",
 				link: "https://www.dyson.co.kr/",
+				reason: "혁신적인 기술로 완성하는 프리미엄 헤어 스타일링",
 			},
 		],
 		letter:
 			"항상 저를 위해 따뜻한 마음을 보여주셔서 감사합니다. 이 작은 선물이 제 마음을 전하는 데 도움이 되길 바랍니다.",
-		reasons: [
-			"일상 생활에서 실용적으로 사용할 수 있는 선물입니다.",
-			"고급스러운 디자인으로 선물받는 분의 품격을 높여줄 수 있습니다.",
-			"장기적으로 사용할 수 있는 내구성 있는 제품입니다.",
-		],
 	});
 
 	const scrollPrev = () => emblaApi?.scrollPrev();
 	const scrollNext = () => emblaApi?.scrollNext();
 
+	const handleCopy = () => {
+		navigator.clipboard.writeText(recommendation.letter);
+	};
 	const renderGiftCard = (gift: Recommendation["gifts"][0], index: number) => (
 		<div key={index} className="group card overflow-hidden p-0 h-full">
 			<div className="aspect-[4/3] overflow-hidden bg-gray-100">
@@ -104,12 +112,17 @@ function RouteComponent() {
 					className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
 				/>
 			</div>
-			<div className="p-6">
+			<div className="pt-6">
 				<h3 className="text-lg font-semibold">{gift.name}</h3>
 				<p className="text-blue-500 font-medium mt-1">{gift.price}</p>
-				<p className="text-gray-600 mt-2 text-sm leading-relaxed">
+				<p className="text-gray-600 mt-2 text-sm leading-relaxed flex items-center">
+					<BadgeInfo className="w-4 h-4 mr-1.5" />
 					{gift.description}
 				</p>
+				<div className="flex items-center space-x-2 mt-4">
+					<Lightbulb className="w-4 h-4 mr-1.5" />
+					<p className="text-gray-600 text-sm leading-relaxed">{gift.reason}</p>
+				</div>
 				<div className="flex items-center space-x-4 mt-4">
 					{gift.link && (
 						<a
@@ -177,19 +190,23 @@ function RouteComponent() {
 				</div>
 			</div>
 
-			<div className="card p-8">
+			<div className="card p-8 mb-8">
 				<h2 className="text-2xl font-semibold mb-6 flex items-center">
 					<Mail className="w-6 h-6 mr-2 text-blue-500" />
 					추천 편지
 				</h2>
-				<div className="bg-gray-50 rounded-xl p-6 border border-gray-100">
+				<Card className="flex flex-row justify-center items-center">
 					<p className="text-gray-700 whitespace-pre-line leading-relaxed">
 						{recommendation.letter}
 					</p>
-				</div>
+					<Copy
+						className="w-4 h-4 text-gray-500 cursor-pointer"
+						onClick={handleCopy}
+					/>
+				</Card>
 			</div>
 
-			<div className="card p-8">
+			{/* <div className="card p-8">
 				<h2 className="text-2xl font-semibold mb-6 flex items-center">
 					<Heart className="w-6 h-6 mr-2 text-blue-500" />
 					추천 이유
@@ -207,7 +224,7 @@ function RouteComponent() {
 						</li>
 					))}
 				</ul>
-			</div>
+			</div> */}
 		</div>
 	);
 }
