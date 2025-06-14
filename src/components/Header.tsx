@@ -7,7 +7,7 @@ export default function Header() {
 				<div className="flex items-center space-x-2.5">
 					<Gift className="w-6 h-6 text-blue-500" />
 					<span className="text-xl font-semibold bg-gradient-to-r from-blue-600 to-blue-400 bg-clip-text text-transparent">
-						Gift Recommendation
+						Gift Box
 					</span>
 				</div>
 			</div>
