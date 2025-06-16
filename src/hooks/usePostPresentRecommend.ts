@@ -15,6 +15,7 @@ export const postPresentRecommend = async (data: FormValues) => {
 		"https://present-recommendation.fly.dev/api/generate",
 		{
 			body: formData,
+			timeout: 1000 * 30,
 		},
 	);
 

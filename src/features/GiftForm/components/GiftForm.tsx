@@ -46,7 +46,7 @@ const GiftForm = () => {
 			purpose: "",
 		},
 		validators: {
-			onBlur: schema,
+			onSubmit: schema,
 		},
 		onSubmit: ({ value }) => {
 			console.log(value);
