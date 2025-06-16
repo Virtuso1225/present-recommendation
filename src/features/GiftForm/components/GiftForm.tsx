@@ -4,10 +4,11 @@ import {
 	CardHeader,
 	CardTitle,
 } from "@/components/ui/card";
+import Loading from "@/features/GiftForm/components/Loading";
 import { useAppForm } from "@/hooks/form";
 import { usePostPresentRecommend } from "@/hooks/usePostPresentRecommend";
 import { useRouter } from "@tanstack/react-router";
-import { Send, Sparkles } from "lucide-react";
+import { Send } from "lucide-react";
 import { z } from "zod";
 
 const genderValues = ["male", "female"] as const;
@@ -48,41 +49,34 @@ const GiftForm = () => {
 		validators: {
 			onSubmit: schema,
 		},
-		onSubmit: ({ value }) => {
-			console.log(value);
+		onSubmit: async ({ value }) => {
+			// 파일을 Base64로 변환
+			const file = value.conversationFile;
+			const reader = new FileReader();
+
+			reader.onload = () => {
+				const base64String = reader.result as string;
+				// 파일을 Base64 문자열로 변환하여 저장
+				const formDataToStore = {
+					...value,
+					conversationFile: {
+						name: file.name,
+						type: file.type,
+						data: base64String,
+					},
+				};
+				localStorage.setItem("presentForm", JSON.stringify(formDataToStore));
+			};
+
+			reader.readAsDataURL(file);
 			postPresentRecommend(value as FormValues);
 		},
 	});
 
-	const renderLoadingState = () => (
-		<div className="min-h-[80vh] flex flex-col items-center justify-center">
-			<div className="relative w-24 h-24">
-				<div
-					className="absolute inset-0 rounded-full inline-block box-border animate-spin"
-					style={{
-						borderTop: "3px solid #4B7BF5",
-						borderRight: "3px solid transparent",
-					}}
-				/>
-				<div className="absolute inset-0 flex items-center justify-center text-[#4B7BF5]">
-					<Sparkles className="w-8 h-8" strokeWidth={1.5} />
-				</div>
-			</div>
-			<h2 className="mt-8 text-2xl font-semibold text-gray-900">
-				AI가 최적의 선물을 찾고 있어요
-			</h2>
-			<div className="mt-4 space-y-2 text-center text-gray-500">
-				<p>대화 내용을 분석하고</p>
-				<p>취향과 상황에 맞는 선물을 찾고</p>
-				<p>마음을 담은 편지도 작성하고 있어요</p>
-			</div>
-		</div>
-	);
-
 	return (
 		<div className="max-w-3xl mx-auto">
 			{isPending ? (
-				renderLoadingState()
+				<Loading />
 			) : (
 				<Card className="space-y-8 p-8">
 					<CardHeader className="px-0">
