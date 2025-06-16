@@ -27,14 +27,14 @@ export const postPresentRecommend = async (data: FormValues) => {
 
 type Props = MutationOptions<PresentRecommendationResponse, Error, FormValues>;
 
-const dummyFn = async (
+export const dummyFn = async (
 	data: FormValues,
 ): Promise<PresentRecommendationResponse> => {
 	console.log(data);
 	return new Promise((resolve) => {
 		setTimeout(() => {
 			resolve({
-				present: [
+				presents: [
 					{
 						id: 1,
 						name: "test",
@@ -46,15 +46,31 @@ const dummyFn = async (
 						mall_name: "test",
 						search_query: "test",
 						product_info: {
-							additionalProp1: {},
-							additionalProp2: {},
-							additionalProp3: {},
+							brand: "test",
+							category1: "test",
+							category2: "test",
+							category3: "test",
+							hprice: "10000",
+							image: "https://via.placeholder.com/150",
+							link: "https://www.google.com",
+							lprice: "10000",
+							maker: "test",
+							mallName: "test",
+							title: "test",
 						},
 						alternative_products: [
 							{
-								additionalProp1: {},
-								additionalProp2: {},
-								additionalProp3: {},
+								brand: "test",
+								category1: "test",
+								category2: "test",
+								category3: "test",
+								hprice: "10000",
+								image: "https://via.placeholder.com/150",
+								link: "https://www.google.com",
+								lprice: "10000",
+								maker: "test",
+								mallName: "test",
+								title: "test",
 							},
 						],
 						search_error: "test",
@@ -69,6 +85,6 @@ const dummyFn = async (
 export const usePostPresentRecommend = (props: Props) => {
 	return useMutation({
 		...props,
-		mutationFn: dummyFn,
+		mutationFn: postPresentRecommend,
 	});
 };

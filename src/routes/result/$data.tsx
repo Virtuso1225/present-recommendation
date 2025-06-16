@@ -13,23 +13,10 @@ import {
 	Mail,
 	Share2,
 } from "lucide-react";
-import { useState } from "react";
 
 export const Route = createFileRoute("/result/$data")({
 	component: RouteComponent,
 });
-
-interface Recommendation {
-	gifts: Array<{
-		name: string;
-		price: string;
-		description: string;
-		imageUrl: string;
-		link?: string;
-		reason: string;
-	}>;
-	letter: string;
-}
 
 function RouteComponent() {
 	const { data } = Route.useParams();
@@ -42,70 +29,40 @@ function RouteComponent() {
 		containScroll: "trimSnaps",
 	});
 
-	const [recommendation, _] = useState<Recommendation>({
-		gifts: [
-			{
-				name: "애플워치 SE",
-				price: "359,000원",
-				description: "건강 관리와 일상적인 활동을 추적하는 완벽한 동반자",
-				imageUrl:
-					"https://images.unsplash.com/photo-1434494878577-86c23bcb06b9?auto=format&fit=crop&q=80&w=600",
-				link: "https://www.apple.com/kr/apple-watch-se/",
-				reason: "일상 생활에서 실용적으로 사용할 수 있는 선물입니다.",
-			},
-			{
-				name: "조 말론 향수",
-				price: "198,000원",
-				description: "우아하고 세련된 향기로 특별한 순간을 만들어주는 선물",
-				imageUrl:
-					"https://images.unsplash.com/photo-1523293182086-7651a899d37f?auto=format&fit=crop&q=80&w=600",
-				link: "https://www.jomalone.co.kr/",
-				reason: "우아하고 세련된 향기로 특별한 순간을 만들어주는 선물",
-			},
-			{
-				name: "소니 WH-1000XM5 헤드폰",
-				price: "429,000원",
-				description:
-					"최고급 노이즈 캔슬링과 뛰어난 음질을 제공하는 프리미엄 헤드폰",
-				imageUrl:
-					"https://images.unsplash.com/photo-1505740420928-5e560c06d30e?auto=format&fit=crop&q=80&w=600",
-				link: "https://www.sony.co.kr/electronics/headphones/wh-1000xm5",
-				reason: "최고급 노이즈 캔슬링과 뛰어난 음질을 제공하는 프리미엄 헤드폰",
-			},
-			{
-				name: "몽블랑 사피아노 반지갑",
-				price: "289,000원",
-				description: "클래식한 디자인과 최고급 가죽으로 제작된 명품 지갑",
-				imageUrl:
-					"https://images.unsplash.com/photo-1627123424574-724758594e93?auto=format&fit=crop&q=80&w=600",
-				link: "https://www.montblanc.com/",
-				reason: "클래식한 디자인과 최고급 가죽으로 제작된 명품 지갑",
-			},
-			{
-				name: "다이슨 에어랩",
-				price: "699,000원",
-				description: "혁신적인 기술로 완성하는 프리미엄 헤어 스타일링",
-				imageUrl:
-					"https://images.unsplash.com/photo-1522338242992-e1a54906a8da?auto=format&fit=crop&q=80&w=600",
-				link: "https://www.dyson.co.kr/",
-				reason: "혁신적인 기술로 완성하는 프리미엄 헤어 스타일링",
-			},
-		],
-		letter:
-			"항상 저를 위해 따뜻한 마음을 보여주셔서 감사합니다. 이 작은 선물이 제 마음을 전하는 데 도움이 되길 바랍니다.",
-	});
-
 	const scrollPrev = () => emblaApi?.scrollPrev();
 	const scrollNext = () => emblaApi?.scrollNext();
 
 	const handleCopy = () => {
-		navigator.clipboard.writeText(recommendation.letter);
+		navigator.clipboard.writeText(results.letter);
 	};
-	const renderGiftCard = (gift: Recommendation["gifts"][0], index: number) => (
+
+	const alternativeProducts = results.presents.flatMap((gift) => {
+		return gift.alternative_products.map((product) => {
+			return {
+				image_url: product.image,
+				name: product.title,
+				price: `${Number(product.lprice).toLocaleString()}원`,
+				shopping_link: product.link,
+				description: product.title,
+				reason: product.title,
+			};
+		});
+	});
+	const renderGiftCard = (
+		gift: {
+			image_url: string;
+			name: string;
+			price: string;
+			shopping_link: string;
+			description: string;
+			reason: string;
+		},
+		index: number,
+	) => (
 		<div key={index} className="group card overflow-hidden p-0 h-full">
 			<div className="aspect-[4/3] overflow-hidden bg-gray-100">
 				<img
-					src={gift.imageUrl}
+					src={gift.image_url}
 					alt={gift.name}
 					className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
 				/>
@@ -122,9 +79,9 @@ function RouteComponent() {
 					<p className="text-gray-600 text-sm leading-relaxed">{gift.reason}</p>
 				</div>
 				<div className="flex items-center space-x-4 mt-4">
-					{gift.link && (
+					{gift.shopping_link && (
 						<a
-							href={gift.link}
+							href={gift.shopping_link}
 							target="_blank"
 							rel="noopener noreferrer"
 							className="flex items-center text-sm text-blue-600 hover:text-blue-700 font-medium"
@@ -154,7 +111,7 @@ function RouteComponent() {
 
 				{/* Main recommendations */}
 				<div className="grid md:grid-cols-2 gap-6 mb-8 mx-auto">
-					{recommendation.gifts
+					{results.presents
 						.slice(0, 2)
 						.map((gift, index) => renderGiftCard(gift, index))}
 				</div>
@@ -164,11 +121,13 @@ function RouteComponent() {
 					<h3 className="text-lg font-medium mb-4">다른 추천 선물</h3>
 					<div className="overflow-hidden" ref={emblaRef}>
 						<div className="flex gap-6">
-							{recommendation.gifts.slice(2).map((gift, index) => (
-								<div className="flex-[0_0_300px]" key={`${gift.name}`}>
-									{renderGiftCard(gift, index + 2)}
-								</div>
-							))}
+							{[...results.presents.slice(2), ...alternativeProducts].map(
+								(gift, index) => (
+									<div className="flex-[0_0_300px]" key={`${gift.name}`}>
+										{renderGiftCard(gift, index + 2)}
+									</div>
+								),
+							)}
 						</div>
 					</div>
 					<button
@@ -193,12 +152,12 @@ function RouteComponent() {
 					<Mail className="w-6 h-6 mr-2 text-blue-500" />
 					추천 편지
 				</h2>
-				<Card className="flex flex-row justify-center items-center">
+				<Card className="flex flex-row justify-center items-center p-4">
 					<p className="text-gray-700 whitespace-pre-line leading-relaxed">
-						{recommendation.letter}
+						{results.letter}
 					</p>
 					<Copy
-						className="w-4 h-4 text-gray-500 cursor-pointer"
+						className="flex-shrink-0 w-4 h-4 text-gray-500 cursor-pointer"
 						onClick={handleCopy}
 					/>
 				</Card>

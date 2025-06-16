@@ -9,21 +9,37 @@ export type PresentRecommendation = {
 	mall_name: string;
 	search_query: string;
 	product_info: {
-		additionalProp1: Record<string, unknown>;
-		additionalProp2: Record<string, unknown>;
-		additionalProp3: Record<string, unknown>;
+		brand: string;
+		category1: string;
+		category2: string;
+		category3: string;
+		hprice: string;
+		image: string;
+		link: string;
+		lprice: string;
+		maker: string;
+		mallName: string;
+		title: string;
 	};
 	alternative_products: [
 		{
-			additionalProp1: Record<string, unknown>;
-			additionalProp2: Record<string, unknown>;
-			additionalProp3: Record<string, unknown>;
+			brand: string;
+			category1: string;
+			category2: string;
+			category3: string;
+			hprice: string;
+			image: string;
+			link: string;
+			lprice: string;
+			maker: string;
+			mallName: string;
+			title: string;
 		},
 	];
 	search_error: string;
 };
 
 export type PresentRecommendationResponse = {
-	present: PresentRecommendation[];
+	presents: PresentRecommendation[];
 	letter: string;
 };
